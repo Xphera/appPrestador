@@ -1,0 +1,26 @@
+<!-- Generated template for the GrillaDisponibilidadComponent component -->
+<ion-grid>
+  <ion-row>
+
+    <ion-col col-12>
+      <ion-row>
+        <ion-col col-1></ion-col>
+        <ion-col col-1 *ngFor="let dia of dias">{{dia.nombre}}</ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let hora of horas">
+        <ion-col col-1>{{hora}}</ion-col>
+        <ion-col col-1 *ngFor="let dia of dias">
+            <ion-checkbox [(ngModel)]="Defaultdisponibilidad[dia.id][hora]"></ion-checkbox>
+            <!-- <ion-label>{{ dia.id }}</ion-label> -->
+            <!-- <ion-checkbox [(ngModel)]="disponibilidad[dia.id-1][hora]"></ion-checkbox> -->
+
+
+        </ion-col>
+      </ion-row>
+
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<button ion-button block (click)="clickBoton()">Guardar</button>
