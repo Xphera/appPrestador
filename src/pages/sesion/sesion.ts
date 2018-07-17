@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SesionProvider } from '../../providers/sesion/sesion';
 
+import { PushNotificationProvider } from '../../providers/push-notification/push-notification';
+
 /**
  * Generated class for the SesionPage page.
  *
@@ -19,9 +21,20 @@ export class SesionPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private _sesionPrvdr: SesionProvider) {
+    private _sesionPrvdr: SesionProvider,
+    public _pushNotificationPrvdr: PushNotificationProvider
+  ) {
+
     this._sesionPrvdr.getSesionPorIniciar()
     this._sesionPrvdr.getSesionIniciada()
+
+    if (this._pushNotificationPrvdr.data.tipo == 'detalleSesion') {
+      this._sesionPrvdr.getSesion(this._pushNotificationPrvdr.data.sesionId)
+        .subscribe((data) => {
+          this.detalleSesion(data)
+        })
+    }
+
   }
 
   ionViewDidLoad() {
@@ -29,7 +42,7 @@ export class SesionPage {
   }
 
   detalleSesion(sesion) {
-    this.navCtrl.push('DetalleSesionPage',{sesion,tipoSesion:this.tipoSesion})
+    this.navCtrl.push('DetalleSesionPage', { sesion, tipoSesion: this.tipoSesion })
   }
 
   getSesion(e) {

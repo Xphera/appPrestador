@@ -4,6 +4,9 @@ export const URL_SESION_POR_INICIAR = BASE_URL + "/api/prestadores/SesionPorInic
 export const URL_SESION_PROXIMA = BASE_URL + "/api/prestadores/SesionProxima/";
 export const URL_SESION_FINALIZADA = BASE_URL + "/api/prestadores/SesionFinalizada/";
 export const URL_SESION_INICIADA = BASE_URL + "/api/prestadores/SesionIniciada/";
+export const URL_SESION_DETALLE = BASE_URL + "/api/prestadores/SesionDetalle/";
+
+
 export const URL_DISPONIBILIDAD = BASE_URL + "/api/prestadores/Disponibilidad/";
 export const URL_PRESTADOR_ZONA = BASE_URL + "/api/prestadores/Zona/";
 export const URL_CAMBIAR_PASSWORD = BASE_URL + "/api/prestadores/CambiarPassword/"

@@ -8,7 +8,8 @@ import {
   URL_SESION_INICIAR,
   URL_SESION_FINALIZAR,
   URL_SESION_INICIADA,
-  URL_SESION_CANCELAR
+  URL_SESION_CANCELAR,
+  URL_SESION_DETALLE
 } from '../../config/url.config';
 import { Sesion } from '../../model/models.index';
 import 'rxjs/add/operator/map';
@@ -28,6 +29,7 @@ export class SesionProvider {
   public proxima: Array<Sesion> = new Array<Sesion>()
   public finalizada: Array<Sesion> = new Array<Sesion>()
   public sesionInicida:Sesion = new Sesion()
+  public SesionDetalle:Sesion = new Sesion()
 
   constructor(
     public http: HttpClient,
@@ -110,6 +112,16 @@ export class SesionProvider {
   }
 
 
+  getSesion(sesionId) {
+    let headers = this._autenticacionPrvdr.gerHeaders();
+    let request = this.http.get<Sesion[]>(URL_SESION_DETALLE+sesionId+'/',{ headers })
+    return this._peticionPrvdr.peticion({ request: request,loading:false})
+      .map((resp: any) => {
+        return this.mapSesion(resp)
+      })
+  }
+
+
 
   iniciar(sesion) {
     let headers = this._autenticacionPrvdr.gerHeaders();
@@ -155,8 +167,8 @@ export class SesionProvider {
         sesion.inicio = resp.inicio
         sesion.fin = resp.fin
         sesion.fechaInicio = resp.fechaInicio
-        sesion.estado.estado = resp.estado
-        sesion.estado.id = resp.estadoId
+        sesion.estado.estado = resp.estado.estado
+        sesion.estado.id = resp.estado.id
         sesion.ubicacion.direccion = resp.direccion
         //capturar sesion iniciada
         this.sesionInicida = sesion

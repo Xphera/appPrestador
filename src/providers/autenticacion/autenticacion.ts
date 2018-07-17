@@ -8,6 +8,7 @@ import { PeticionProvider } from '../peticion/peticion';
 import { AlmacenamientoProvider } from '../almacenamiento/almacenamiento';
 import { App } from "ionic-angular";
 import { Observable } from "rxjs/Observable";
+import { PushNotificationProvider } from '../push-notification/push-notification';
 
 /*
   Generated class for the AutenticacionProvider provider.
@@ -26,7 +27,8 @@ export class AutenticacionProvider {
     public http: HttpClient,
     private _peticionPrvdr: PeticionProvider,
     private _almacenamientoPrvdr: AlmacenamientoProvider,
-    public app: App
+    public app: App,
+    public _pushNotificationPrvdr:PushNotificationProvider
   ) {
     console.log('Hello AutenticacionProvider Provider');
     this.cargarToken();
@@ -44,19 +46,22 @@ export class AutenticacionProvider {
       .subscribe((data) => {
         this.guardarToken(data["token"])
         this.nav.setRoot('TabsPage')
+        this._pushNotificationPrvdr.addtagsNotificacion({ "userId": data["user_id"] })
       })
   }
 
   logout() {
     this.token = null;
+    this._pushNotificationPrvdr.deletetagsNotificacion("usrerId")
     return this._almacenamientoPrvdr.eliminar('token')
+
   }
 
   restablecerPasword(data) {
-    let request =  this.http.post(URL_RESTABLECER_PASSWORD, data)
+    let request = this.http.post(URL_RESTABLECER_PASSWORD, data)
     return new Observable(observer => {
       this._peticionPrvdr.peticion({ request: request })
-        .subscribe((resp:any) => {
+        .subscribe((resp: any) => {
           this.restablecer_pasword = data.usuario
           this._almacenamientoPrvdr.guardar('restablecer_pasword', this.restablecer_pasword)
             .then(
@@ -69,10 +74,10 @@ export class AutenticacionProvider {
 
   restablecerPaswordValidaCodigo(data) {
 
-    let request =  this.http.put(URL_RESTABLECER_PASSWORD, data)
+    let request = this.http.put(URL_RESTABLECER_PASSWORD, data)
     return new Observable(observer => {
       this._peticionPrvdr.peticion({ request: request })
-        .subscribe((resp:any) => {
+        .subscribe((resp: any) => {
           this.restablecer_pasword = null
           this._almacenamientoPrvdr.eliminar('restablecer_pasword')
             .then(

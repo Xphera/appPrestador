@@ -33,4 +33,12 @@ export class TabsPage {
     console.log('ionViewDidLoad TabsPage');
   }
 
+  detalleSesion(sesion) {
+    this.navCtrl.push('DetalleSesionPage',{sesion,tipoSesion:''})
+  }
+
+  tabSelected(tab) {
+  console.log(tab.index);
+}
+
 }

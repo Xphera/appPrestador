@@ -61,8 +61,10 @@ export class DetalleSesionPage {
     public _sesionPrvdr: SesionProvider,
     public ionicComponentPrvdr: IonicComponentProvider,
     public modalCtrl: ModalController) {
+
     this.sesion = this.navParams.get('sesion')
     this.tipoSesion = this.navParams.get('tipoSesion')
+
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad DetalleSesionPage');
