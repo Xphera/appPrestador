@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Observable"
 import { IonicComponentProvider } from '../ionic-component/ionic-component';
+import { AlmacenamientoProvider } from '../almacenamiento/almacenamiento';
 
 /*
   Generated class for the PeticionProvider provider.
@@ -13,11 +14,25 @@ import { IonicComponentProvider } from '../ionic-component/ionic-component';
 export class PeticionProvider {
   peticionId: number = 0;
   showloader: any;
+  private token:string
   // protected loading: boolean
   constructor(
     public http: HttpClient,
+    private _almacenamientoPrvdr: AlmacenamientoProvider,
     private _ionicComponentPrvdr: IonicComponentProvider, ) {
     console.log('Hello PeticionProvider Provider');
+    this._almacenamientoPrvdr.obtener('token').then(
+      (data: any) => {
+        this.token = data.data;
+      })
+  }
+
+  public gerHeaders(): HttpHeaders {
+    let headers = new HttpHeaders({
+      'Authorization': 'Token ' + this.token,
+      'Content-Type': 'application/json'
+    });
+    return headers;
   }
 
   peticion(input: input) {

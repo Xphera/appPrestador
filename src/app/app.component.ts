@@ -17,24 +17,32 @@ export class MyApp {
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     modalCtrl: ModalController,
-    _autenticacionPrvdr:AutenticacionProvider,
+    _autenticacionPrvdr: AutenticacionProvider,
     public _pushNotificationPrvdr: PushNotificationProvider
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
+      this._pushNotificationPrvdr.init_notifications();
       _autenticacionPrvdr.activo()
-      .then((data)=>{
-        if(data["data"] == null){
-          this.rootPage = 'LoginPage';
-        }else{
-          this.rootPage= 'TabsPage';
-        }
-        splashScreen.hide();
-        this._pushNotificationPrvdr.init_notifications();
-      })
+        .then((data) => {
+          if (data["data"] == null) {
+            this.rootPage = 'LoginPage';
+          } else {
+            this.rootPage = 'TabsPage';
+          }
+          splashScreen.hide();
 
+        })
+        this._pushNotificationPrvdr.esActivo = true
+    });
+
+    platform.resume.subscribe((result) => {
+        this._pushNotificationPrvdr.esActivo = true
+    });
+    platform.pause.subscribe((result) => {
+        this._pushNotificationPrvdr.esActivo = false
     });
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { OneSignal } from '@ionic-native/onesignal';
 import { Platform, App } from 'ionic-angular';
-// import {SesionProvider} from '../sesion/sesion';
+import {SesionProvider} from '../sesion/sesion';
 /*
   Generated class for the PushnNotificationProvider provider.
 
@@ -12,20 +12,20 @@ import { Platform, App } from 'ionic-angular';
 @Injectable()
 export class PushNotificationProvider {
   public data: any = { tipo: '', sesionId: '' }
-
+  public esActivo:boolean
 
   constructor(
     private oneSignal: OneSignal,
     public platform: Platform,
     public app: App,
-    // private _sesionPrvdr: SesionProvider,
+    private _sesionPrvdr: SesionProvider,
   ) {
     console.log('Hello PushnNotificationProvider Provider');
   }
 
 
   init_notifications() {
-  
+
     if (this.platform.is('cordova')) {
 
       this.oneSignal.startInit('96150a2e-39ac-477d-a116-16cc8c5e2e88', '807999059175');
@@ -36,7 +36,10 @@ export class PushNotificationProvider {
 
       this.oneSignal.handleNotificationReceived().subscribe((data: any) => {
         // do something when notification is received
-
+        this._sesionPrvdr.getSesionPorIniciar()
+        this._sesionPrvdr.getSesionProxima()
+        this._sesionPrvdr.getSesionFinalizada()
+        console.log("actulizar sesiones]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
       });
 
       this.oneSignal.handleNotificationOpened().subscribe((data: any) => {
