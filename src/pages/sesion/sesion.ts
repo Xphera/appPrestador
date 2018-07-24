@@ -28,13 +28,6 @@ export class SesionPage {
     this._sesionPrvdr.getSesionPorIniciar()
     this._sesionPrvdr.getSesionIniciada()
 
-    if (this._pushNotificationPrvdr.data.tipo == 'detalleSesion') {
-      this._sesionPrvdr.getSesion(this._pushNotificationPrvdr.data.sesionId)
-        .subscribe((data) => {
-          this.detalleSesion(data)
-        })
-    }
-
   }
 
   ionViewDidLoad() {

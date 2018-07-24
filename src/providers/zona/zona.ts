@@ -23,7 +23,7 @@ export class ZonaProvider {
 
 
   obtenerZona() {
-    let headers = this._autenticacionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request =  this.http.get(URL_ZONA, { headers })
     return this._peticionPrvdr.peticion({ request: request})
   }

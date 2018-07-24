@@ -34,7 +34,7 @@ export class PrestadorProvider {
   }
 
   obtenerPrestador() {
-    let headers = this._autenticacionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.get<Pestador>(URL_PRESTADOR, { headers, params: { userId: 'userId' } })
     this._peticionPrvdr.peticion({ request: request }).subscribe(
       (resp: Pestador) => {
@@ -43,7 +43,7 @@ export class PrestadorProvider {
   }
 
   editarInfoBasica(data) {
-    let headers = this._autenticacionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.put(URL_PRESTADOR + this.prestador.id + '/', data, { headers })
     return this._peticionPrvdr.peticion({ request: request })
       .map(
@@ -56,20 +56,20 @@ export class PrestadorProvider {
   }
 
   guardarZona(geodata) {
-    let headers = this._autenticacionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.post(URL_PRESTADOR_ZONA, { geodata }, { headers })
     return this._peticionPrvdr.peticion({ request: request })
   }
 
   zonaPrestador() {
-    let headers = this._autenticacionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.get(URL_PRESTADOR_ZONA, { headers })
     return this._peticionPrvdr.peticion({ request: request })
 
   }
 
   cambioContraseña(passwords) {
-    let headers = this._autenticacionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.put(URL_CAMBIAR_PASSWORD, passwords, { headers })
     return new Observable(observer => {
       this._peticionPrvdr.peticion({ request: request })
@@ -81,7 +81,7 @@ export class PrestadorProvider {
   }
 
   cambioUsuario(datos) {
-    let headers = this._autenticacionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.post(URL_CAMBIAR_USUARIO, datos, { headers })
     return new Observable(observer => {
       this._peticionPrvdr.peticion({ request: request })
@@ -97,7 +97,7 @@ export class PrestadorProvider {
   }
 
   cambioUsuarioCodigo(datos) {
-    let headers = this._autenticacionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.put(URL_CAMBIAR_USUARIO, datos, { headers })
     return new Observable(observer => {
       this._peticionPrvdr.peticion({ request: request })

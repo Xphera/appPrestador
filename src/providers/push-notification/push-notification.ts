@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { OneSignal } from '@ionic-native/onesignal';
 import { Platform, App } from 'ionic-angular';
-import {SesionProvider} from '../sesion/sesion';
+import { SesionProvider } from '../sesion/sesion';
 /*
   Generated class for the PushnNotificationProvider provider.
 
@@ -12,13 +12,14 @@ import {SesionProvider} from '../sesion/sesion';
 @Injectable()
 export class PushNotificationProvider {
   public data: any = { tipo: '', sesionId: '' }
-  public esActivo:boolean
+  public esActivo: boolean
 
   constructor(
     private oneSignal: OneSignal,
     public platform: Platform,
     public app: App,
     private _sesionPrvdr: SesionProvider,
+    public zone: NgZone
   ) {
     console.log('Hello PushnNotificationProvider Provider');
   }
@@ -35,18 +36,27 @@ export class PushNotificationProvider {
       this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
 
       this.oneSignal.handleNotificationReceived().subscribe((data: any) => {
+        this.zone.run(() => {
+          if (data.payload.additionalData.tipo == "detalleSesion") {
+            this._sesionPrvdr.getSesionPorIniciar()
+            this._sesionPrvdr.getSesionProxima()
+            this._sesionPrvdr.getSesionFinalizada()
+          }
+        })
         // do something when notification is received
-        this._sesionPrvdr.getSesionPorIniciar()
-        this._sesionPrvdr.getSesionProxima()
-        this._sesionPrvdr.getSesionFinalizada()
-        console.log("actulizar sesiones]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
       });
 
       this.oneSignal.handleNotificationOpened().subscribe((data: any) => {
         // do something when a notification is opened
-        this.data = data.notification.payload.additionalData
-        // let nav = this.app.getActiveNav();
 
+        if (data.notification.payload.additionalData.tipo == "detalleSesion") {
+
+          this._sesionPrvdr.getSesion(data.notification.payload.additionalData.sesionId)
+            .subscribe((data) => {
+              this.app.getRootNavs()[0].push('DetalleSesionPage', { sesion: data });
+            })
+        }
       });
 
       this.oneSignal.endInit();
@@ -54,8 +64,9 @@ export class PushNotificationProvider {
     } else {
       console.log('OneSignal no configurado');
     }
-  }
 
+
+  }
 
   addtagsNotificacion(tgas) {
     this.oneSignal.sendTags(tgas);

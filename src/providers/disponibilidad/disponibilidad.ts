@@ -24,14 +24,14 @@ export class DisponibilidadProvider {
   }
 
   enviarDisponibiliad(disponibilidad: any) {
-    let headers = this._autenticacionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.post(URL_DISPONIBILIDAD, {disponibilidad},{ headers })
     return this._peticionPrvdr.peticion({ request: request })
 
   }
 
   obtenerDisponibiliad() {
-    let headers = this._autenticacionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.get(URL_DISPONIBILIDAD,{ headers })
     this._peticionPrvdr.peticion({ request: request })
       .subscribe(

@@ -40,7 +40,7 @@ export class SesionProvider {
   }
 
   getSesionPorIniciar() {
-    let headers = this._peticionPrvdr.gerHeaders();
+    let headers =this._peticionPrvdr.getHeaders();
     let request = this.http.get<Sesion[]>(URL_SESION_POR_INICIAR,{ headers })
     this._peticionPrvdr.peticion({ request: request,loading:false })
       .map((resp: any) => {
@@ -53,12 +53,11 @@ export class SesionProvider {
       })
       .subscribe((resp: Sesion[]) => {
         this.porIniciar = resp
-        console.log(this.porIniciar.length)
       })
   }
 
   getSesionProxima() {
-    let headers = this._peticionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.get<Sesion[]>(URL_SESION_PROXIMA,{ headers })
     this._peticionPrvdr.peticion({ request: request,loading:false })
       .map((resp: any) => {
@@ -75,7 +74,7 @@ export class SesionProvider {
   }
 
   getSesionFinalizada() {
-    let headers = this._peticionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.get<Sesion[]>(URL_SESION_FINALIZADA,{ headers })
     this._peticionPrvdr.peticion({ request: request,loading:false})
       .map((resp: any) => {
@@ -92,7 +91,7 @@ export class SesionProvider {
   }
 
   getSesionIniciada() {
-    let headers = this._peticionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.get<Sesion>(URL_SESION_INICIADA,{ headers })
     this._peticionPrvdr.peticion({ request: request,loading:false })
       .map((resp: any) => {
@@ -114,7 +113,7 @@ export class SesionProvider {
 
 
   getSesion(sesionId) {
-    let headers = this._peticionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.get<Sesion[]>(URL_SESION_DETALLE+sesionId+'/',{ headers })
     return this._peticionPrvdr.peticion({ request: request,loading:false})
       .map((resp: any) => {
@@ -125,7 +124,7 @@ export class SesionProvider {
 
 
   iniciar(sesion) {
-    let headers = this._peticionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.post<Sesion[]>(URL_SESION_INICIAR, { sesionId: sesion.sesionId },{ headers })
     return this._peticionPrvdr.peticion({ request: request })
       .map((resp: any) => {
@@ -141,7 +140,7 @@ export class SesionProvider {
   }
 
   finalizar(sesion,tipo,novedad) {
-    let headers = this._peticionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.post<Sesion[]>(URL_SESION_FINALIZAR, { sesionId: sesion.sesionId,tipo,novedad },{ headers })
     return this._peticionPrvdr.peticion({ request: request })
       .map((resp: any) => {
@@ -161,7 +160,7 @@ export class SesionProvider {
   }
 
   cancelar(sesion) {
-    let headers = this._peticionPrvdr.gerHeaders();
+    let headers = this._peticionPrvdr.getHeaders();
     let request = this.http.post<Sesion[]>(URL_SESION_CANCELAR, { sesionId: sesion.sesionId},{ headers })
     return this._peticionPrvdr.peticion({ request: request })
       .map((resp: any) => {

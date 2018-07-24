@@ -93,15 +93,6 @@ export class AutenticacionProvider {
     })
   }
 
-
-  public gerHeaders(): HttpHeaders {
-    let headers = new HttpHeaders({
-      'Authorization': 'Token ' + this.token,
-      'Content-Type': 'application/json'
-    });
-    return headers;
-  }
-
   public activo() {
     return this._almacenamientoPrvdr.obtener('token');
   }

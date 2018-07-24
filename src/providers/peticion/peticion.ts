@@ -27,7 +27,7 @@ export class PeticionProvider {
       })
   }
 
-  public gerHeaders(): HttpHeaders {
+  public getHeaders(): HttpHeaders {
     let headers = new HttpHeaders({
       'Authorization': 'Token ' + this.token,
       'Content-Type': 'application/json'
