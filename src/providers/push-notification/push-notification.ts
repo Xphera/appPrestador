@@ -31,7 +31,7 @@ export class PushNotificationProvider {
 
       this.oneSignal.startInit('96150a2e-39ac-477d-a116-16cc8c5e2e88', '807999059175');
 
-      this.oneSignal.sendTag("tipo", "prestador");
+      this.oneSignal.sendTag("app", "prestador");
 
       this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
 
