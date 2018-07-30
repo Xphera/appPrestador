@@ -31,7 +31,7 @@ export class AutenticacionProvider {
     public _pushNotificationPrvdr:PushNotificationProvider
   ) {
     console.log('Hello AutenticacionProvider Provider');
-    this.cargarToken();
+
     this._almacenamientoPrvdr.obtener('restablecer_pasword').then(
       (data: any) => {
         this.restablecer_pasword = data.data;
@@ -97,16 +97,12 @@ export class AutenticacionProvider {
     return this._almacenamientoPrvdr.obtener('token');
   }
 
-
   public guardarToken(token) {
     this.token = token;
-    this._almacenamientoPrvdr.guardar('token', this.token)
+    this._almacenamientoPrvdr.guardar('token', this.token).then(()=>{
+      // inicializar Token
+      this._peticionPrvdr.cargarToken()
+    })
   }
-  protected cargarToken(): void {
-    this._almacenamientoPrvdr.obtener('token')
-      .then((almacenamiento: any) => {
-        this.token = almacenamiento.data;
-      }
-      )
-  }
+
 }

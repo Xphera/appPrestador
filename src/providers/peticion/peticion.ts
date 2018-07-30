@@ -1,4 +1,4 @@
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from "rxjs/Observable"
 import { IonicComponentProvider } from '../ionic-component/ionic-component';
@@ -14,17 +14,22 @@ import { AlmacenamientoProvider } from '../almacenamiento/almacenamiento';
 export class PeticionProvider {
   peticionId: number = 0;
   showloader: any;
-  private token:string
+  private token: string
   // protected loading: boolean
   constructor(
     public http: HttpClient,
     private _almacenamientoPrvdr: AlmacenamientoProvider,
     private _ionicComponentPrvdr: IonicComponentProvider, ) {
     console.log('Hello PeticionProvider Provider');
-    this._almacenamientoPrvdr.obtener('token').then(
-      (data: any) => {
-        this.token = data.data;
-      })
+    this.cargarToken()
+  }
+
+  public cargarToken(): void {
+    this._almacenamientoPrvdr.obtener('token')
+      .then((almacenamiento: any) => {
+        this.token = almacenamiento.data;
+      }
+      )
   }
 
   public getHeaders(): HttpHeaders {
@@ -44,8 +49,8 @@ export class PeticionProvider {
 
     let observable = new Observable((observer) => {
 
-      if(loading){
-        if (this.peticionId == 0 ) {
+      if (loading) {
+        if (this.peticionId == 0) {
           this.showloaderOpen()
         }
         ++this.peticionId

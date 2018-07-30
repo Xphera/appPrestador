@@ -35,14 +35,14 @@ export class MyApp {
           splashScreen.hide();
 
         })
-        this._pushNotificationPrvdr.esActivo = true
+        // this._pushNotificationPrvdr.esActivo = true
     });
 
-    platform.resume.subscribe((result) => {
-        this._pushNotificationPrvdr.esActivo = true
-    });
-    platform.pause.subscribe((result) => {
-        this._pushNotificationPrvdr.esActivo = false
-    });
+    // platform.resume.subscribe((result) => {
+    //     this._pushNotificationPrvdr.esActivo = true
+    // });
+    // platform.pause.subscribe((result) => {
+    //     this._pushNotificationPrvdr.esActivo = false
+    // });
   }
 }

@@ -37,7 +37,7 @@ export class PushNotificationProvider {
 
       this.oneSignal.handleNotificationReceived().subscribe((data: any) => {
         this.zone.run(() => {
-          if (data.payload.additionalData.tipo == "detalleSesion") {
+          if (data.payload.additionalData.tipo == "detalleSesion" ||data.payload.additionalData.tipo == "detalleSesionAutomatica") {
             this._sesionPrvdr.getSesionPorIniciar()
             this._sesionPrvdr.getSesionProxima()
             this._sesionPrvdr.getSesionFinalizada()
@@ -49,8 +49,7 @@ export class PushNotificationProvider {
 
       this.oneSignal.handleNotificationOpened().subscribe((data: any) => {
         // do something when a notification is opened
-
-        if (data.notification.payload.additionalData.tipo == "detalleSesion") {
+        if (data.notification.payload.additionalData.tipo == "detalleSesion" || data.notification.payload.additionalData.tipo == "detalleSesionAutomatica") {
 
           this._sesionPrvdr.getSesion(data.notification.payload.additionalData.sesionId)
             .subscribe((data) => {
