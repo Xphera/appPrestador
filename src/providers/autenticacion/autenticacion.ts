@@ -52,7 +52,7 @@ export class AutenticacionProvider {
 
   logout() {
     this.token = null;
-    this._pushNotificationPrvdr.deletetagsNotificacion("usrerId")
+    this._pushNotificationPrvdr.deletetagsNotificacion("userId")
     return this._almacenamientoPrvdr.eliminar('token')
 
   }
