@@ -22,6 +22,7 @@ import { AlmacenamientoProvider } from '../providers/almacenamiento/almacenamien
 import { PrestadorProvider } from '../providers/prestador/prestador';
 import { LocalizarUbicacionProvider } from '../providers/localizar-ubicacion/localizar-ubicacion';
 import { PushNotificationProvider } from '../providers/push-notification/push-notification';
+import { ChatProvider } from '../providers/chat/chat';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { PushNotificationProvider } from '../providers/push-notification/push-no
     NativeStorage,
     PrestadorProvider,
     LocalizarUbicacionProvider,
-    PushNotificationProvider
+    PushNotificationProvider,
+    ChatProvider
   ]
 })
 export class AppModule {}

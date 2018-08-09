@@ -22,6 +22,7 @@ export class AutenticacionProvider {
   protected token: string;
   protected nav;
   public restablecer_pasword
+  public usuario:any
 
   constructor(
     public http: HttpClient,
@@ -44,7 +45,7 @@ export class AutenticacionProvider {
     let request = this.http.post(URL_LOGIN, { username, password })
     this._peticionPrvdr.peticion({ request: request })
       .subscribe((data) => {
-        this.guardarToken(data["token"])
+        this.guardarUsuario(data)
         this.nav.setRoot('TabsPage')
         this._pushNotificationPrvdr.addtagsNotificacion({ "userId": data["user_id"] })
       })
@@ -72,7 +73,7 @@ export class AutenticacionProvider {
     })
   }
 
-  restablecerPaswordValidaCodigo(data) {
+  public restablecerPaswordValidaCodigo(data) {
 
     let request = this.http.put(URL_RESTABLECER_PASSWORD, data)
     return new Observable(observer => {
@@ -84,7 +85,7 @@ export class AutenticacionProvider {
               () => {
 
                 this.nav = this.app.getActiveNav();
-                this.guardarToken(resp["token"])
+                this.guardarUsuario(resp)
                 this.nav.setRoot('TabsPage')
 
                 observer.next(true);
@@ -94,14 +95,18 @@ export class AutenticacionProvider {
   }
 
   public activo() {
-    return this._almacenamientoPrvdr.obtener('token');
+    let ou = this._almacenamientoPrvdr.obtener('usuario')
+    ou.then((data)=>{
+      this.usuario = JSON.parse(data["data"])
+    })
+    return ou;
   }
 
-  public guardarToken(token) {
-    this.token = token;
-    this._almacenamientoPrvdr.guardar('token', this.token).then(()=>{
+  public guardarUsuario(usuario) {
+    this.usuario = usuario;
+    this._almacenamientoPrvdr.guardar('usuario',JSON.stringify(usuario)).then(()=>{
       // inicializar Token
-      this._peticionPrvdr.cargarToken()
+      this._peticionPrvdr.cargarToken(usuario.token)
     })
   }
 

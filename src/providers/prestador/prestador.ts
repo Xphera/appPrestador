@@ -74,7 +74,7 @@ export class PrestadorProvider {
     return new Observable(observer => {
       this._peticionPrvdr.peticion({ request: request })
         .subscribe((resp: any) => {
-          this._autenticacionPrvdr.guardarToken(resp.token)
+          this._autenticacionPrvdr.guardarUsuario(resp)
           observer.next(true);
         })
     })
@@ -105,7 +105,7 @@ export class PrestadorProvider {
           this._almacenamientoPrvdr.eliminar('nuevo_usuario').then(
             () => {
               this.prestador.email = datos.newusuario
-              this._autenticacionPrvdr.guardarToken(resp.token)
+              this._autenticacionPrvdr.guardarUsuario(resp)
               observer.next(true);
             })
         })

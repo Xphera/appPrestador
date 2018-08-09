@@ -213,6 +213,7 @@ export class SesionProvider {
       sesion.fin = resp.fin
       sesion.inicio = resp.inicio
       sesion.duracion = this.diff(sesion.fin, sesion.inicio)["minuto"]
+      sesion.compraDetalleId = resp.compraDetalle.id
     }
     return sesion
   }

@@ -118,8 +118,8 @@ export class DetalleSesionPage {
     return this.openMenu = !this.openMenu;
   }
 
-  comentar() {
-    this.navCtrl.push('FeedbackPage', { sesion: this.sesion })
+  chat() {
+    this.navCtrl.push('MensajePage', { compraDetalleId: this.sesion.compraDetalleId });
   }
 
   cancelar() {

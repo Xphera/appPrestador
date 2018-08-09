@@ -22,3 +22,5 @@ export const URL_LOGIN = BASE_URL + "/api-token-auth/"
 export const URL_PRESTADOR = BASE_URL + "/api/prestadores/Prestador/";
 
 export const URL_RESTABLECER_PASSWORD = BASE_URL + "/api/prestadores/RestablecerPassword/";
+
+export const URL_CHAT = BASE_URL + "/api/servicios/CompraDetalleChat/";

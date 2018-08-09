@@ -1,0 +1,76 @@
+import { Component,ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams,Content } from 'ionic-angular';
+import { FormBuilder,Validators } from '@angular/forms';
+import { ChatProvider } from '../../providers/chat/chat';
+import {AutenticacionProvider} from '../../providers/autenticacion/autenticacion';
+
+/**
+ * Generated class for the MensajePage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
+@IonicPage()
+@Component({
+  selector: 'page-mensaje',
+  templateUrl: 'mensaje.html',
+})
+export class MensajePage {
+
+@ViewChild(Content) content: Content;
+ public messageForm: any;
+ public chatBox: string;
+ public compraDetalleId:number
+ public mensajes:Array<Mensaje> = new Array<Mensaje>()
+
+ constructor(
+   public navCtrl: NavController,
+   public formBuilder: FormBuilder,
+   public navParams: NavParams,
+   public _autenticacionPrvdr:AutenticacionProvider,
+   public _chatPrvdr:ChatProvider) {
+
+  this._autenticacionPrvdr.activo()
+
+   this.messageForm = formBuilder.group({
+     message: ['', [Validators.required]]
+   });
+   this.chatBox = '';
+ }
+
+ ionViewDidEnter(){
+   this.compraDetalleId = this.navParams.get('compraDetalleId')
+   this._chatPrvdr.obtenerMensaje(this.compraDetalleId)
+   .subscribe((data:any[])=>{
+     this.mensajes = data
+     this.scrollToBottom()
+   })
+
+   this._chatPrvdr.mensajeSubject
+    .subscribe((mensaje:any)=>{
+      if(this.mensajes["compraDetalle"]["compraDetalleId"] == mensaje.chat.compraDetalleId){
+        this.mensajes["mensajes"].push(mensaje.mensaje)
+      }
+   })
+ }
+ionViewDidLoad() {
+    console.log('ionViewDidLoad MensajePage');
+  }
+
+  enviarMensaje(mensaje){
+    this._chatPrvdr.enviarMensaje(this.compraDetalleId,mensaje)
+    .subscribe((data)=>{
+      this.mensajes["mensajes"].push(data)
+      this.chatBox=""
+      this.scrollToBottom()
+    })
+  }
+
+  scrollToBottom() {
+   setTimeout(() => {
+     this.content.scrollToBottom();
+   }, 300);
+ }
+
+}

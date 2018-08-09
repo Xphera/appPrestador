@@ -19,6 +19,7 @@ export class TabsPage {
   tab1Root = 'SesionPage';
   tab2Root = 'DetalleSesionPage';
   tab3Root = 'MiCuentaPage';
+  tab4Root = 'ChatPage';
 
   public sesionIniciada
 

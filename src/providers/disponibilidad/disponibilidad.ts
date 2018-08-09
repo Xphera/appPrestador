@@ -18,8 +18,7 @@ export class DisponibilidadProvider {
 
   constructor(
     public http: HttpClient,
-    private _peticionPrvdr: PeticionProvider,
-    private _autenticacionPrvdr:AutenticacionProvider) {
+    private _peticionPrvdr: PeticionProvider) {
     console.log('Hello DisponibilidadProvider Provider');
   }
 

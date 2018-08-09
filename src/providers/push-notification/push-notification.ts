@@ -2,6 +2,8 @@ import { Injectable, NgZone } from '@angular/core';
 import { OneSignal } from '@ionic-native/onesignal';
 import { Platform, App } from 'ionic-angular';
 import { SesionProvider } from '../sesion/sesion';
+import { ChatProvider } from '../chat/chat';
+
 /*
   Generated class for the PushnNotificationProvider provider.
 
@@ -19,6 +21,7 @@ export class PushNotificationProvider {
     public platform: Platform,
     public app: App,
     private _sesionPrvdr: SesionProvider,
+    private _chatPrvdr:ChatProvider,
     public zone: NgZone
   ) {
     console.log('Hello PushnNotificationProvider Provider');
@@ -29,7 +32,7 @@ export class PushNotificationProvider {
 
     if (this.platform.is('cordova')) {
 
-      this.oneSignal.startInit('96150a2e-39ac-477d-a116-16cc8c5e2e88', '807999059175');
+      this.oneSignal.startInit('96150a2e-39ac-477d-a116-16cc8c5e2e88', '119391834875');
 
       this.oneSignal.sendTag("app", "prestador");
 
@@ -37,11 +40,35 @@ export class PushNotificationProvider {
 
       this.oneSignal.handleNotificationReceived().subscribe((data: any) => {
         this.zone.run(() => {
+          // let pageId = this.app.getRootNavs()[0].getActive()["id"]
+
           if (data.payload.additionalData.tipo == "detalleSesion" ||data.payload.additionalData.tipo == "detalleSesionAutomatica") {
             this._sesionPrvdr.getSesionPorIniciar()
             this._sesionPrvdr.getSesionProxima()
             this._sesionPrvdr.getSesionFinalizada()
           }
+
+          // actulizar chat
+          else if (data.payload.additionalData.tipo == "chat") {
+          let chat = this._chatPrvdr.chat.find((chat)=>{
+                return (chat.chatId == data.payload.additionalData.mensaje.chatId)
+            });
+
+            if(chat != undefined){
+              this._chatPrvdr.chat = this._chatPrvdr.chat.filter((chat)=>{
+                return (chat.chatId != data.payload.additionalData.mensaje.chatId)
+              })
+            }
+
+            this._chatPrvdr.chat.unshift(data.payload.additionalData.chat)
+            //fin actulizar chat
+
+            // actualizar mensajes
+            this._chatPrvdr.nuevoMensaje(data.payload.additionalData)
+
+            console.log(JSON.stringify(chat))
+          }
+
         })
         // do something when notification is received
 
@@ -55,6 +82,10 @@ export class PushNotificationProvider {
             .subscribe((data) => {
               this.app.getRootNavs()[0].push('DetalleSesionPage', { sesion: data });
             })
+        }
+
+        if (data.notification.payload.additionalData.tipo == "chat") {
+          this.app.getRootNavs()[0].push('MensajePage', { compraDetalleId: data.notification.payload.additionalData.chat.compraDetalleId });
         }
       });
 

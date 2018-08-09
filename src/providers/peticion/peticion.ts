@@ -24,10 +24,16 @@ export class PeticionProvider {
     this.cargarToken()
   }
 
-  public cargarToken(): void {
-    this._almacenamientoPrvdr.obtener('token')
+  public cargarToken(token?): void {
+    if(token){
+      this.token = token;
+    }
+    this._almacenamientoPrvdr.obtener('usuario')
       .then((almacenamiento: any) => {
-        this.token = almacenamiento.data;
+        if (almacenamiento.data != null) {
+          let usuario = JSON.parse(almacenamiento.data)
+          this.token = usuario["token"];
+        }
       }
       )
   }

@@ -16,11 +16,11 @@
 <ion-content>
   <div class="map-image">
     <div id="map" data-tap-disabled="true" class="map"></div>
-    <ion-fab right top *ngIf="tipoSesion=='porIniciar'">
+    <!-- <ion-fab right top *ngIf="tipoSesion=='porIniciar'">
       <button ion-fab class="fab-map pop-in" (click)="seeInMap(card)">
       <ion-icon name='pin'></ion-icon>
     </button>
-    </ion-fab>
+    </ion-fab> -->
   </div>
   <ion-card class="adv-map">
 
@@ -66,9 +66,9 @@
       <div class="popup-menu-panel" [ngClass]="{'in': openMenu}">
         <!-- sesion no iniciada  -->
 
-        <div class="popup-menu-item" (click)="comentar()" *ngIf="sesion.estado.id != 5">
-          <ion-icon name="ios-mail"></ion-icon>
-          <span>Comentar </span>
+        <div class="popup-menu-item" (click)="chat()" *ngIf="sesion.estado.id != 5">
+          <ion-icon name="md-chatboxes"></ion-icon>
+          <span>Chat </span>
         </div>
 
         <div class="popup-menu-item" (click)="cancelar()" *ngIf="sesion.estado.id ==2 || sesion.estado.id ==4 ">

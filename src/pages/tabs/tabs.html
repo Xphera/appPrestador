@@ -11,5 +11,6 @@
     <ion-tab tabIcon="md-home" tabTitle="Seiones" [root]="tab1Root"></ion-tab>
     <ion-tab [color]="danger" [enabled]="_sesionPrvdr.sesionInicida.estado.id == 5"   [tabBadge]="_sesionPrvdr.sesionInicida.estado.id == 5? 1:0" tabBadgeStyle="danger" tabIcon="md-timer" tabTitle="Sesion Iniciada" [root]="tab2Root" [rootParams]="{sesion:_sesionPrvdr.sesionInicida}"></ion-tab>
     <ion-tab tabIcon="md-contact" tabTitle="Mi cuenta" [root]="tab3Root"></ion-tab>
+    <ion-tab tabIcon="md-chatboxes" tabTitle="Chat" [root]="tab4Root"></ion-tab>
   </ion-tabs>
 </ion-content>

@@ -2,6 +2,7 @@ import { Ubicacion,EstadoSesion,Paquete,Cliente } from './models.index';
 
 export class Sesion {
   public sesionId: number;
+  public compraDetalleId: number;
   public fechaInicio: string;
   public cliente: Cliente = new Cliente();
   public calificacion: number

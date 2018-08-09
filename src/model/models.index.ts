@@ -4,3 +4,5 @@ export { Paquete } from './paquete.model';
 export { Cliente } from './cliente.model';
 export { Sesion } from './sesion.model';
 export { Pestador } from './prestador.model';
+export { Chat } from './chat.model';
+export { Mensaje } from './mensaje.model';
