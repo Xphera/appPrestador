@@ -84,7 +84,7 @@ export class PushNotificationProvider {
             })
         }
 
-        if (data.notification.payload.additionalData.tipo == "chat") {
+        else if (data.notification.payload.additionalData.tipo == "chat") {
           this.app.getRootNavs()[0].push('MensajePage', { compraDetalleId: data.notification.payload.additionalData.chat.compraDetalleId });
         }
       });

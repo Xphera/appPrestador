@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,App } from 'ionic-angular';
 import { ChatProvider } from '../../providers/chat/chat';
 
 /**
@@ -19,6 +19,7 @@ export class ChatPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public app: App,
     public _chatPrvdr:ChatProvider) {
 
   }
@@ -32,7 +33,7 @@ export class ChatPage {
   }
 
   verMensaje(compraDetalleId){
-     this.navCtrl.push('MensajePage', { compraDetalleId: compraDetalleId });
+     this.app.getRootNavs()[0].push('MensajePage', { compraDetalleId: compraDetalleId });
   }
 
 }

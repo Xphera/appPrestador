@@ -95,11 +95,11 @@ export class AutenticacionProvider {
   }
 
   public activo() {
-    let ou = this._almacenamientoPrvdr.obtener('usuario')
-    ou.then((data)=>{
+    let ua = this._almacenamientoPrvdr.obtener('usuario')
+    ua.then((data)=>{
       this.usuario = JSON.parse(data["data"])
     })
-    return ou;
+    return ua;
   }
 
   public guardarUsuario(usuario) {

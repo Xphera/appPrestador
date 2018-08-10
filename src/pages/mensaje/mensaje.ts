@@ -22,55 +22,58 @@ export class MensajePage {
  public messageForm: any;
  public chatBox: string;
  public compraDetalleId:number
- public mensajes:Array<Mensaje> = new Array<Mensaje>()
+ public mensajes:Array<any> = new Array<any>()
 
  constructor(
    public navCtrl: NavController,
    public formBuilder: FormBuilder,
    public navParams: NavParams,
    public _autenticacionPrvdr:AutenticacionProvider,
+   
    public _chatPrvdr:ChatProvider) {
 
-  this._autenticacionPrvdr.activo()
+       this._autenticacionPrvdr.activo()
 
-   this.messageForm = formBuilder.group({
-     message: ['', [Validators.required]]
-   });
-   this.chatBox = '';
- }
-
- ionViewDidEnter(){
-   this.compraDetalleId = this.navParams.get('compraDetalleId')
-   this._chatPrvdr.obtenerMensaje(this.compraDetalleId)
-   .subscribe((data:any[])=>{
-     this.mensajes = data
-     this.scrollToBottom()
-   })
-
-   this._chatPrvdr.mensajeSubject
-    .subscribe((mensaje:any)=>{
-      if(this.mensajes["compraDetalle"]["compraDetalleId"] == mensaje.chat.compraDetalleId){
-        this.mensajes["mensajes"].push(mensaje.mensaje)
+        this.messageForm = formBuilder.group({
+          message: ['', [Validators.required,Validators.maxLength(250)]]
+        });
+        this.chatBox = '';
       }
-   })
- }
-ionViewDidLoad() {
-    console.log('ionViewDidLoad MensajePage');
-  }
 
-  enviarMensaje(mensaje){
-    this._chatPrvdr.enviarMensaje(this.compraDetalleId,mensaje)
-    .subscribe((data)=>{
-      this.mensajes["mensajes"].push(data)
-      this.chatBox=""
-      this.scrollToBottom()
-    })
-  }
+      ionViewDidEnter(){
+        this.compraDetalleId = this.navParams.get('compraDetalleId')
 
-  scrollToBottom() {
-   setTimeout(() => {
-     this.content.scrollToBottom();
-   }, 300);
- }
+        this._chatPrvdr.obtenerMensaje(this.compraDetalleId)
+        .subscribe((data:any[])=>{
+          this.mensajes = data
+          this.scrollToBottom()
+        })
 
-}
+        this._chatPrvdr.mensajeSubject
+         .subscribe((mensaje:any)=>{
+           if(this.mensajes["compraDetalle"]["compraDetalleId"] == mensaje.chat.compraDetalleId){
+             this.mensajes["mensajes"].push(mensaje.mensaje)
+             this.scrollToBottom();
+           }
+        })
+      }
+     ionViewDidLoad() {
+         console.log('ionViewDidLoad MensajePage');
+       }
+
+       enviarMensaje(mensaje){
+         this._chatPrvdr.enviarMensaje(this.compraDetalleId,mensaje)
+         .subscribe((data)=>{
+           this.mensajes["mensajes"].push(data)
+           this.chatBox=""
+           this.scrollToBottom()
+         })
+       }
+
+       scrollToBottom() {
+        setTimeout(() => {
+          this.content.scrollToBottom();
+        },600);
+      }
+
+     }

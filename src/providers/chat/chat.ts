@@ -26,20 +26,22 @@ export class ChatProvider {
 
   public obtenerChat(){
     let headers = this._peticionPrvdr.getHeaders();
-    this.http.get(URL_CHAT,{ headers })
+    let request = this.http.get(URL_CHAT,{ headers })
+    this._peticionPrvdr.peticion({ request: request })
     .subscribe((data:Chat[])=>{
       this.chat = data
     })
   }
   public obtenerMensaje(compraDetalleId){
     let headers = this._peticionPrvdr.getHeaders();
-    return this.http.get(URL_CHAT+'?compraDetalleId='+compraDetalleId,{ headers })
-
+    let request =  this.http.get(URL_CHAT+'?compraDetalleId='+compraDetalleId,{ headers })
+    return this._peticionPrvdr.peticion({ request: request })
   }
 
   public enviarMensaje(compraDetalleId,mensaje){
     let headers = this._peticionPrvdr.getHeaders();
-    return  this.http.post(URL_CHAT,{compraDetalleId,mensaje},{ headers })
+    let request = this.http.post(URL_CHAT,{compraDetalleId,mensaje},{ headers })
+    return this._peticionPrvdr.peticion({ request: request })
   }
 
   public nuevoMensaje(data){
