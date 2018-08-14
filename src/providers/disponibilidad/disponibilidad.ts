@@ -4,7 +4,7 @@ import { PeticionProvider } from '../peticion/peticion';
 import {
   URL_DISPONIBILIDAD
 } from '../../config/url.config';
-import { AutenticacionProvider } from '../autenticacion/autenticacion';
+
 /*
   Generated class for the DisponibilidadProvider provider.
 

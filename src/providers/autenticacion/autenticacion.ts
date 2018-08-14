@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   URL_LOGIN,
@@ -19,17 +19,16 @@ import { PushNotificationProvider } from '../push-notification/push-notification
 @Injectable()
 export class AutenticacionProvider {
 
-  protected token: string;
   protected nav;
   public restablecer_pasword
-  public usuario:any
+  public usuario: any
 
   constructor(
     public http: HttpClient,
     private _peticionPrvdr: PeticionProvider,
     private _almacenamientoPrvdr: AlmacenamientoProvider,
     public app: App,
-    public _pushNotificationPrvdr:PushNotificationProvider
+    public _pushNotificationPrvdr: PushNotificationProvider
   ) {
     console.log('Hello AutenticacionProvider Provider');
 
@@ -45,16 +44,14 @@ export class AutenticacionProvider {
     let request = this.http.post(URL_LOGIN, { username, password })
     this._peticionPrvdr.peticion({ request: request })
       .subscribe((data) => {
-        this.guardarUsuario(data)
-        this.nav.setRoot('TabsPage')
+        this.crearSesion(data, 'TabsPage')
         this._pushNotificationPrvdr.addtagsNotificacion({ "userId": data["user_id"] })
       })
   }
 
   logout() {
-    this.token = null;
     this._pushNotificationPrvdr.deletetagsNotificacion("userId")
-    return this._almacenamientoPrvdr.eliminar('token')
+    return this._almacenamientoPrvdr.eliminar('usuario')
 
   }
 
@@ -85,9 +82,7 @@ export class AutenticacionProvider {
               () => {
 
                 this.nav = this.app.getActiveNav();
-                this.guardarUsuario(resp)
-                this.nav.setRoot('TabsPage')
-
+                this.crearSesion(data, 'TabsPage')
                 observer.next(true);
               })
         })
@@ -96,18 +91,25 @@ export class AutenticacionProvider {
 
   public activo() {
     let ua = this._almacenamientoPrvdr.obtener('usuario')
-    ua.then((data)=>{
+    ua.then((data) => {
       this.usuario = JSON.parse(data["data"])
     })
     return ua;
   }
 
+  protected crearSesion(usuario, page) {
+    this.guardarUsuario(usuario).then(() => {
+      // inicializar Token
+      this._peticionPrvdr.cargarToken().then(() => {
+        this.nav.setRoot(page)
+      })
+    })
+  }
+
   public guardarUsuario(usuario) {
     this.usuario = usuario;
-    this._almacenamientoPrvdr.guardar('usuario',JSON.stringify(usuario)).then(()=>{
-      // inicializar Token
-      this._peticionPrvdr.cargarToken(usuario.token)
-    })
+    return this._almacenamientoPrvdr.guardar('usuario', JSON.stringify(usuario))
+
   }
 
 }

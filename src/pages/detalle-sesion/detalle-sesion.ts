@@ -3,7 +3,15 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { SesionProvider } from '../../providers/sesion/sesion';
 import { IonicComponentProvider } from '../../providers/ionic-component/ionic-component';
 import { ModalController } from 'ionic-angular';
-import ol from 'openlayers';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import Vector from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
+import { Fill, Style,Stroke, Text,Icon } from 'ol/style';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import Feature from 'ol/Feature';
+import {Point} from 'ol/geom';
 
 /**
  * Generated class for the DetalleSesionPage page.
@@ -21,28 +29,28 @@ export class DetalleSesionPage {
   public sesion
   public tipoSesion
   public openMenu = false;
-  private map: ol.Map;
+  public map:Map;
 
-  public vectorSource = new ol.source.Vector();
-  public vectorLayer = new ol.layer.Vector({
+  public vectorSource = new Vector();
+  public vectorLayer = new VectorLayer({
     source: this.vectorSource,
     style: ((feature, resolution) => {
-      let style = new ol.style.Style({
-        fill: new ol.style.Fill({
+      let style = new Style({
+        fill: new Fill({
           color: '#ffcc33',
         }),
-        stroke: new ol.style.Stroke({
+        stroke: new Stroke({
           color: '#ffcc33',
           width: 2
         }),
-        text: new ol.style.Text({
+        text: new Text({
           font: '15px Calibri,sans-serif',
           // overflow: 'true',
           text: feature.get('name'),
-          fill: new ol.style.Fill({
+          fill: new Fill({
             color: '#000'
           }),
-          stroke: new ol.style.Stroke({
+          stroke: new Stroke({
             color: '#fff',
             width: 3
           })
@@ -51,9 +59,9 @@ export class DetalleSesionPage {
       return style
     })
   });
-  private raster = new ol.layer.Tile({
-    source: new ol.source.OSM()
-  });
+  private raster =  new TileLayer({
+      source: new OSM()
+    });
 
   constructor(
     public navCtrl: NavController,
@@ -80,10 +88,10 @@ export class DetalleSesionPage {
 
   loadMap() {
     parseFloat
-    this.map = new ol.Map({
+    this.map = new Map({
       layers: [this.raster, this.vectorLayer],
       target: 'map',
-      view: new ol.View({
+      view: new View({
         projection: 'EPSG:4326',
         center: [parseFloat(this.sesion.ubicacion.longitud), parseFloat(this.sesion.ubicacion.latitud)],
         zoom: 17
@@ -93,12 +101,12 @@ export class DetalleSesionPage {
   }
 
   addPoint(longitud, latitud, vector, icono) {
-    let iconFeature = new ol.Feature({
-      geometry: new ol.geom.Point([longitud, latitud]),
+    let iconFeature = new Feature({
+      geometry: new Point([longitud, latitud]),
     });
 
-    iconFeature.setStyle(new ol.style.Style({
-      image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
+    iconFeature.setStyle(new Style({
+      image: new Icon(/** @type {olx.style.IconOptions} */({
         crossOrigin: 'anonymous',
         src: 'assets/imgs/markerMap/' + icono
       }))

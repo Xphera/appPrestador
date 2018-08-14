@@ -4,13 +4,15 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AutenticacionProvider } from '../providers/autenticacion/autenticacion';
 import { PushNotificationProvider } from '../providers/push-notification/push-notification';
+import { timer } from 'rxjs/observable/timer';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   // rootPage: any = '';
-  rootPage: any = 'LoginPage';
+  rootPage: any = '';
+  showSplash = true; // <-- show animation
 
   constructor(
     platform: Platform,
@@ -25,6 +27,8 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       this._pushNotificationPrvdr.init_notifications();
+      splashScreen.hide();
+      timer(3000).subscribe(() => this.showSplash = false) // <-- hide animation after 3s
       _autenticacionPrvdr.activo()
         .then((data) => {
           if (data["data"] == null) {
@@ -32,7 +36,6 @@ export class MyApp {
           } else {
             this.rootPage = 'TabsPage';
           }
-          splashScreen.hide();
 
         })
         // this._pushNotificationPrvdr.esActivo = true

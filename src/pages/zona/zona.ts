@@ -1,9 +1,19 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import ol from 'openlayers';
 import { ZonaProvider } from '../../providers/zona/zona';
 import { PrestadorProvider } from '../../providers/prestador/prestador';
 import { IonicComponentProvider } from '../../providers/ionic-component/ionic-component';
+
+import Map from 'ol/Map';
+import View from 'ol/View';
+import Vector from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
+import { Fill, Style,Stroke, Text,Icon } from 'ol/style';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import Feature from 'ol/Feature';
+import GeoJSON from 'ol/format/GeoJSON';
+import { getCenter } from 'ol/extent';
 /**
  * Generated class for the ZonaPage page.
  *
@@ -20,30 +30,30 @@ export class ZonaPage {
 
   public selectZona: number
   private dataGeoJson
-  private map: ol.Map
+  private map:Map
   public dataGeoJsonSeleccionado
 
-  public vectorSource = new ol.source.Vector();
+  public vectorSource = new Vector();
 
-  public vectorLayer = new ol.layer.Vector({
+  public vectorLayer = new VectorLayer({
     source: this.vectorSource,
     style: ((feature, resolution) => {
-      let style = new ol.style.Style({
-        fill: new ol.style.Fill({
+      let style = new Style({
+        fill: new Fill({
           color: feature.get('color')
         }),
-        stroke: new ol.style.Stroke({
+        stroke: new Stroke({
           color: '#ffcc33',
           width: 2
         }),
-        text: new ol.style.Text({
+        text: new Text({
           font: '15px Calibri,sans-serif',
           // overflow: 'true',
           text: feature.get('name'),
-          fill: new ol.style.Fill({
+          fill: new Fill({
             color: '#000'
           }),
-          stroke: new ol.style.Stroke({
+          stroke: new Stroke({
             color: '#fff',
             width: 3
           })
@@ -53,8 +63,8 @@ export class ZonaPage {
     })
   });
 
-  private raster = new ol.layer.Tile({
-    source: new ol.source.OSM()
+  private raster = new TileLayer({
+    source: new OSM()
   });
 
   constructor(
@@ -73,7 +83,7 @@ export class ZonaPage {
     this._zonaPrvdr.obtenerZona()
       .subscribe((data) => {
         if (Object.keys(data).length > 0) {
-          this.dataGeoJson = new ol.format.GeoJSON().readFeatures(data)
+          this.dataGeoJson = new GeoJSON().readFeatures(data)
           // buscar zona prestadores
           this._prestadorPrvdr.zonaPrestador()
             .subscribe((zona: any) => {
@@ -102,19 +112,19 @@ export class ZonaPage {
     this.vectorSource.clear();
     this.vectorSource.addFeature(geodata);
     let extent = geodata.getGeometry().getExtent();
-    this.map.getView().setCenter((ol.extent).getCenter(extent));
+    this.map.getView().setCenter(getCenter(extent));
     this.map.getView().setZoom(12);
     this.dataGeoJsonSeleccionado = geodata;
-    (new ol.format.GeoJSON()).writeFeature(geodata);
+    (new GeoJSON()).writeFeature(geodata);
   }
 
 
 
   loadMap() {
-    this.map = new ol.Map({
+    this.map = new Map({
       layers: [this.raster, this.vectorLayer],
       target: 'map',
-      view: new ol.View({
+      view: new View({
         projection: 'EPSG:4326',
         center: [0, 0],
         zoom: 12
@@ -127,7 +137,7 @@ export class ZonaPage {
   }
 
   guardar() {
-    let geodata = (new ol.format.GeoJSON()).writeFeature(this.dataGeoJsonSeleccionado)
+    let geodata = (new GeoJSON()).writeFeature(this.dataGeoJsonSeleccionado)
     this._prestadorPrvdr.guardarZona(geodata)
       .subscribe((data) => {
         this.ionicComponentPrvdr.showLongToastMessage('Zona guardada.')

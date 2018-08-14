@@ -4,7 +4,6 @@ import {
   URL_ZONA
 } from '../../config/url.config';
 import { PeticionProvider } from '../peticion/peticion';
-import { AutenticacionProvider } from '../autenticacion/autenticacion';
 /*
   Generated class for the ZonaProvider provider.
 
@@ -16,8 +15,7 @@ export class ZonaProvider {
 
   constructor(
     public http: HttpClient,
-    private _peticionPrvdr: PeticionProvider,
-    private _autenticacionPrvdr:AutenticacionProvider) {
+    private _peticionPrvdr: PeticionProvider) {
     console.log('Hello ZonaProvider Provider');
   }
 
